@@ -33,83 +33,108 @@ export default {
   },
   methods: {
     login: function(){
+
       console.log('INFO: ログイン処理開始');
+
+      let custNo = this.inputCustNo;
+      let password = this.inputPassword;
+      
       console.log('DEBUG: お客様番号：' + this.inputCustNo);
 
       // ログイン認証APIをリクエスト
-      axios.post(
-        baseUrl + 'users',
-        {
-          custNo: this.inputCustNo,
-          password: this.inputPassword
-        }
-      )
-      .then(response => {
-        console.log('INFO: POST成功');
-      })
-      .catch(function (error) {
-        if(error.response) {
-          console.log('DEBUG: error : ' + error.response);
-          this.$router.push('/login');
-          return;
-        }else if(error.request){
-          console.log('DEBUG: error request : ' + error.request);
-          this.$router.push('/login');
-        }else{
-          console.log('ERROR: error message : ' + error.message);
-          this.$router.push('/login');
-        }
-      });
+      console.log('INFO: ログイン認証APIリクエスト実行');
+      console.log('DEBUG: リクエスト先URI：' + baseUrl + 'login');
 
-      // 残高照会APIをリクエスト
-      axios.post(
-        baseUrl + 'users',
-        {
-          custNo: this.inputCustNo
-        }
-      )
-      .then(response => {
-        console.log('INFO: 口座情報取得成功');
-        console.log('DEBUG: response : ' + response.data);
-        // 口座情報をストアに保存
-        this.$store.commit('storeCustInfo', response.data);
-        console.log('DEBUG: ストアに口座情報を保存：' + response.data);
-      }) 
-      .catch(function(error){
-        if(error.response){
-          console.log('DEBUG: error : ' + error.response);
-        }else if(error.request){
-          console.log('DEBUG: error request : ' + error.request);
-        }else{
-          console.log('ERROR: error message : ' + error.message);
-        }
-      });
+      let loginParams = new URLSearchParams();
+      loginParams.append('custNo', custNo);
+      loginParams.append('password', password);
+      axios.post(baseUrl + 'login', loginParams)
+        .then(response => {
+          console.log('DEBUG: 認証結果：' + response.data);
 
-      // 取引履歴取得APIをリクエスト
-      axios.post(
-        baseUrl + 'histories',
-      {
-        custNo: this.inputCustNo
-      })
-      .then(response => {
-        console.log('INFO: 取引履歴取得成功');
-        console.log('DEBUG: response : ' + response.data);
-        // 取引履歴をストアに保存
-        this.$store.commit('storeHistoryInfo', response.data);
-        console.log('DEBUG: ストアに取引履歴を保存：' + response.data);
-      })
-      .catch(function(error){
-        if(error.response){
-          console.log('DEBUG: error : ' + error.response);
-        }else if(error.request){
-          console.log('DEBUG: error request : ' + error.request);
-        }else{
-          console.log('ERROR: error message : ' + error.message);
-        }
-      });
+          // 残高照会APIをリクエスト
+          console.log('INFO: 残高照会APIリクエスト実行');
+          let showParams = new URLSearchParams();
+          showParams.append('custNo', custNo);
+          axios.post(baseUrl + 'show', showParams)
+            .then(response => {
+              console.log('DEBUG: 残高照会結果：' + response.data);
+              // 口座情報をストアに保存
+              this.$store.commit('storeCustInfo', response.data);
+              console.log('INFO: ストアに口座情報を保存');
 
-      // 残高照会画面へ遷移
-      this.$router.push('/show');
+              // 取引履歴取得APIをリクエスト
+              console.log('INFO: 取引履歴取得APIリクエスト実行');
+              let historyParams = new URLSearchParams();
+              historyParams.append('custNo', custNo);
+              axios.post(baseUrl + 'history', historyParams)
+                .then(response => {
+                  console.log('DEBUG: 取引履歴取得結果：' + response.data);
+                  // 取引履歴をストアに保存
+                  this.$store.commit('storeHistoryInfo', response.data);  
+
+                  // 残高照会画面へ遷移
+                  this.$router.push('/show');
+
+                }).catch(error => {
+                  console.log('ERROR: 取引履歴取得API：' + error);
+                })
+            }).catch(error => {
+              console.log('ERROR: 残高照会API：' + error);
+            })
+        }).catch(error => {
+          console.log('ERROR: ログイン認証API：' + error);
+        });
+
+      // axios.post(
+      //   baseUrl + 'login',
+      //   {
+      //     custNo: this.inputCustNo,
+      //     password: this.inputPassword
+      //   }
+      // ).then(response => {
+      //   // 残高照会APIをリクエスト
+      //   console.log('INFO: 残高照会APIリクエスト実行');
+      //   console.log('DEBUG: リクエスト先URI：' + baseUrl + 'show');
+      //   axios.post(
+      //     baseUrl + 'show',
+      //     {
+      //       custNo: this.inputCustNo
+      //     }
+      //   ).then(response => {
+      //     console.log('INFO: 口座情報取得成功');
+      //     // console.log('DEBUG: response : ' + response.data);
+          
+      //     // 口座情報をストアに保存
+      //     this.$store.commit('storeCustInfo', response.data);
+      //     console.log('INFO: ストアに口座情報を保存');
+
+      //     // 取引履歴取得APIをリクエスト
+      //     console.log('INFO: 取引履歴取得APIリクエスト実行');
+      //     console.log('DEBUG: リクエスト先URI：' + baseUrl + 'history');
+      //     axios.post(
+      //       baseUrl + 'history',
+      //     {
+      //       custNo: this.inputCustNo
+      //     }).then(response => {
+      //       console.log('INFO: 取引履歴取得成功');
+      //       // console.log('DEBUG: response : ' + response.data);
+      //       // 取引履歴をストアに保存
+      //       this.$store.commit('storeHistoryInfo', response.data);
+      //       console.log('INFO: ストアに取引履歴を保存');
+
+      //       // 残高照会画面へ遷移
+      //       this.$router.push('/show');
+
+      //     }).catch(function(error){
+      //       console.log('ERROR 取引履歴取得API：' + error);
+      //     });
+      //   }).catch(function(error){
+      //     console.log('ERROR 残高照会API：' + error);
+      //   });
+      // }).catch(function(error){
+      //   console.log('ERROR ログイン認証API：' + error);
+      // });
     }
   }
 }

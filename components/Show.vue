@@ -1,7 +1,7 @@
 <template>
 <div>
   <h3>{{ title }}</h3>
-  <h4>{{ message }} {{ $store.state.custInfo[0].AMOUNT }}</h4>
+  <h4>{{ message }} {{ $store.state.custInfo }}</h4>
   <table border="1">
       <tr>
         <th>{{ tableDate }}</th>

@@ -53,6 +53,9 @@ export default {
    * APIのリクエスト先URL
    */
   env:{
-    baseUrl: process.env.BASE_URL || 'http://localhost:3333/'
+    // baseUrl: process.env.BASE_URL || 'http://localhost:3333/',
+    // baseUrl: process.env.BASE_URL || 'http://127.0.0.1:8000/api/',
+    baseUrl: process.env.BASE_URL || 'http://localhost:8000/api/'
+
   }
 }
