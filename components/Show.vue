@@ -20,7 +20,7 @@
 
 <script>
 let axios = require('axios');
-let baseUrl = 'http://localhost:3333/';
+let baseUrl = process.env.baseUrl;
 
 export default {
   data: function(){
@@ -37,7 +37,10 @@ export default {
   },
   methods:{
     send: function(){
-      console.log('INFO: 振込画面へ');
+      console.log('INFO: 振込先選択画面へ');
+
+      // 振込先選択画面へ遷移
+      this.$router.push('/select');
     }
   }  
 }

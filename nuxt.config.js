@@ -48,5 +48,11 @@ export default {
     */
     extend (config, ctx) {
     }
+  },
+  /**
+   * APIのリクエスト先URL
+   */
+  env:{
+    baseUrl: process.env.BASE_URL || 'http://localhost:3333/'
   }
 }
