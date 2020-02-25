@@ -8,15 +8,13 @@
         <th>{{ tableSendAmount }}</th>
         <th>{{ tableStockAmount }}</th>
       </tr>
-      <tr v-for="history in histories">
+      <tr v-for="history in $store.state.historyInfo">
         <td>{{ history.DATE }}</td>
         <td>{{ history.DEPOSIT_AMOUNT }}</td>
         <td>{{ history.STOCK_AMOUNT }}</td>
       </tr>      
     </table>
     <button v-on:click="send">{{ button }}</button>
-    <p>顧客情報ストア：{{ $store.state.custInfo }}</p>
-    <p>取引履歴ストア：{{ $store.state.historyInfo }}</p>
 </div>
 </template>
 
@@ -37,25 +35,9 @@ export default {
       storeValue: ''
     };
   },
-  props: {
-    histories: Array,
-    user: Array
-  },
   methods:{
     send: function(){
       console.log('INFO: 振込画面へ');
-
-      console.log('DEBUG: this.$store.state.custNo : ' + this.$store.state.custNo);
-
-      let url = baseUrl + 'histories';
-      let result = axios.get(url)
-      .then(response => {
-        console.log('DEBUG: DATE : ' + response.data[0].DATE);
-      })
-      .catch(function(error){
-        console.log('ERROR: ' + error);
-      });
-      
     }
   }  
 }
