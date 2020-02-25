@@ -18,7 +18,7 @@
 
 <script>
 const axios = require('axios');
-let baseUrl = '';
+let baseUrl = 'http://localhost:3333/';
 
 export default {
   data: function(){
@@ -31,7 +31,6 @@ export default {
       btn: 'ログイン'
     };
   },
-
   methods: {
     /**
      * ログインリクエストを送る処理
@@ -40,29 +39,72 @@ export default {
       console.log('INFO: ログイン処理開始');
       console.log('DEBUG: お客様番号：' + this.inputCustNo);
 
-      // POSTリクエスト送信
-      axios.post(baseUrl, {
-        custNo: this.inputCustNo,
-        password: this.inputPassword
-      })
-      // レスポンス
+      // // POSTリクエスト送信
+      // axios.post(baseUrl + 'users', {
+      //   custNo: this.inputCustNo,
+      //   password: this.inputPassword
+      // })
+      // // レスポンス
+      // .then(response => {
+      //   console.log('INFO: POST成功');
+      // })
+      // // 例外処理
+      // .catch(function (error) {
+      //   if(error.response) {
+      //     console.log('DEBUG: error status : ' + error.response.status);
+      //     console.log('DEBUG: error status text : ' + error.response.statusText);
+      //     console.log('DEBUG: error headers : ' + error.response.headers);
+      //   }else if(error.request){
+      //     console.log('DEBUG: error request : ' + error.request);
+      //   }else{
+      //     console.log('ERROR: error message : ' + error.message);
+      //   }
+      // });
+
+      // 口座情報を取得
+      axios.get(baseUrl + 'users?' + 'CUST_NO=' + this.inputCustNo)
       .then(response => {
-        console.log('INFO: POST成功');
+        console.log('INFO: 口座情報取得成功');
+        console.log('DEBUG: response : ' + response.data);
+        // 口座情報をストアに保存
+        this.$store.commit('storeCustInfo', response.data);
+        console.log('DEBUG: ストアに口座情報を保存：' + response.data);
       })
-      // 例外処理
-      .catch(function (error) {
-        if(error.response) {
+      .catch(function(error){
+        if(error.response){
           console.log('DEBUG: error status : ' + error.response.status);
           console.log('DEBUG: error status text : ' + error.response.statusText);
-          consoel.log('DEBUG: error headers : ' + error.response.headers);
+          console.log('DEBUG: error headers : ' + error.response.headers);
         }else if(error.request){
           console.log('DEBUG: error request : ' + error.request);
         }else{
-          console.log('DEBUG: error message : ' + error.message);
+          console.log('ERROR: error message : ' + error.message);
         }
       });
 
-            
+      // 取引履歴を取得
+      axios.get(baseUrl + 'histories?' + 'CUST_NO=' + this.inputCustNo)
+      .then(response => {
+        console.log('INFO: 取引履歴取得成功');
+        console.log('DEBUG: response : ' + response.data);
+        // 取引履歴をストアに保存
+        this.$store.commit('storeHistoryInfo', response.data);
+        console.log('DEBUG: ストアに取引履歴を保存：' + response.data);
+      })
+      .catch(function(error){
+        if(error.response){
+          console.log('DEBUG: error status : ' + error.response.status);
+          console.log('DEBUG: error status text : ' + error.response.statusText);
+          console.log('DEBUG: error headers : ' + error.response.headers);
+        }else if(error.request){
+          console.log('DEBUG: error request : ' + error.request);
+        }else{
+          console.log('ERROR: error message : ' + error.message);
+        }
+      })
+
+      // 残高照会画面へ遷移
+      this.$router.push('/show');
     }
   }
 }

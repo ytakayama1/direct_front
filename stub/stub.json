@@ -1,0 +1,50 @@
+{
+    "histories": [
+        {
+            "HISTORY_ID": "1",
+            "DATE": "2020-02-23",
+            "DEPOSIT_AMOUNT": "10,000",
+            "STOCK_AMOUNT": "-",
+            "CUST_NO": "1722212"
+        },
+        {
+            "HISTORY_ID": "2",
+            "DATE": "2020-02-24",
+            "DEPOSIT_AMOUNT": "-",
+            "STOCK_AMOUNT": "20,000",
+            "CUST_NO": "1722212"
+        },
+        {
+            "HISTORY_ID": "3",
+            "DATE": "2020-02-25",
+            "DEPOSIT_AMOUNT": "-",
+            "STOCK_AMOUNT": "30,000",
+            "CUST_NO": "2222222"
+        }
+    ],
+
+    "users": [
+        {
+            "CUST_NO": "1722212",
+            "NAME": "ytakayama",
+            "PASSWORD": "1722212",
+            "AMOUNT": "10,000,000",
+            "REGISTED_CUST_1": "2222222",
+            "REGISTED_CUST_2": "",
+            "REGISTED_CUST_3": "",
+            "REGISTED_CUST_4": "",
+            "REGISTED_CUST_5": ""
+        },
+        {
+            "CUST_NO": "2222222",
+            "NAME": "kgomi",
+            "PASSWORD": "2222222",
+            "AMOUNT": "20,000,000",
+            "REGISTED_CUST_1": "1722212",
+            "REGISTED_CUST_2": "",
+            "REGISTED_CUST_3": "",
+            "REGISTED_CUST_4": "",
+            "REGISTED_CUST_5": ""
+        }
+    ]
+}
