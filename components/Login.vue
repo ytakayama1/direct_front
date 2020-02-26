@@ -77,64 +77,21 @@ export default {
                   this.$router.push('/show');
 
                 }).catch(error => {
-                  console.log('ERROR: 取引履歴取得API：' + error);
+                  console.log('ERROR @取引履歴取得API：' + error);
+                  // ログイン画面へ遷移
+                  this.$router.push('/login');
                 })
             }).catch(error => {
-              console.log('ERROR: 残高照会API：' + error);
+              console.log('ERROR @残高照会API：' + error);
+              // ログイン画面へ遷移
+              this.$router.push('/login');
             })
         }).catch(error => {
-          console.log('ERROR: ログイン認証API：' + error);
-        });
-
-      // axios.post(
-      //   baseUrl + 'login',
-      //   {
-      //     custNo: this.inputCustNo,
-      //     password: this.inputPassword
-      //   }
-      // ).then(response => {
-      //   // 残高照会APIをリクエスト
-      //   console.log('INFO: 残高照会APIリクエスト実行');
-      //   console.log('DEBUG: リクエスト先URI：' + baseUrl + 'show');
-      //   axios.post(
-      //     baseUrl + 'show',
-      //     {
-      //       custNo: this.inputCustNo
-      //     }
-      //   ).then(response => {
-      //     console.log('INFO: 口座情報取得成功');
-      //     // console.log('DEBUG: response : ' + response.data);
-          
-      //     // 口座情報をストアに保存
-      //     this.$store.commit('storeCustInfo', response.data);
-      //     console.log('INFO: ストアに口座情報を保存');
-
-      //     // 取引履歴取得APIをリクエスト
-      //     console.log('INFO: 取引履歴取得APIリクエスト実行');
-      //     console.log('DEBUG: リクエスト先URI：' + baseUrl + 'history');
-      //     axios.post(
-      //       baseUrl + 'history',
-      //     {
-      //       custNo: this.inputCustNo
-      //     }).then(response => {
-      //       console.log('INFO: 取引履歴取得成功');
-      //       // console.log('DEBUG: response : ' + response.data);
-      //       // 取引履歴をストアに保存
-      //       this.$store.commit('storeHistoryInfo', response.data);
-      //       console.log('INFO: ストアに取引履歴を保存');
-
-      //       // 残高照会画面へ遷移
-      //       this.$router.push('/show');
-
-      //     }).catch(function(error){
-      //       console.log('ERROR 取引履歴取得API：' + error);
-      //     });
-      //   }).catch(function(error){
-      //     console.log('ERROR 残高照会API：' + error);
-      //   });
-      // }).catch(function(error){
-      //   console.log('ERROR ログイン認証API：' + error);
-      // });
+          console.log('ERROR @ログイン認証API：' + error);
+          // ログイン画面へ遷移
+          this.$router.push('/login');
+        }
+      );
     }
   }
 }
