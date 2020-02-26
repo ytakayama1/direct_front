@@ -6,25 +6,9 @@
         <th>{{ tableRadio }}</th>
         <th>{{ tableSendCustName }}</th>
       </tr>
-      <tr>
-        <td><input type="radio" v-bind:name="$store.state.custInfo[0].REGISTED_CUST_1"></td>
-        <td>{{ $store.state.custInfo[0].REGISTED_CUST_1 }}</td>
-      </tr>
-      <tr>
-        <td><input type="radio" v-bind:name="$store.state.custInfo[0].REGISTED_CUST_2"></td>
-        <td>{{ $store.state.custInfo[0].REGISTED_CUST_2 }}</td>
-      </tr>
-      <tr>
-        <td><input type="radio" v-bind:name="$store.state.custInfo[0].REGISTED_CUST_3"></td>
-        <td>{{ $store.state.custInfo[0].REGISTED_CUST_3 }}</td>
-      </tr>
-      <tr>
-        <td><input type="radio" v-bind:name="$store.state.custInfo[0].REGISTED_CUST_4"></td>
-        <td>{{ $store.state.custInfo[0].REGISTED_CUST_4 }}</td>
-      </tr>
-      <tr>
-        <td><input type="radio" v-bind:name="$store.state.custInfo[0].REGISTED_CUST_5"></td>
-        <td>{{ $store.state.custInfo[0].REGISTED_CUST_5 }}</td>
+      <tr v-for="registedCust in $store.state.registedCusts">
+        <td><input type="radio" name="registedCust" v-bind:value="registedCust" v-model="selectedCustNo"></td>
+        <td>{{ registedCust }}</td>
       </tr>
     </table>
     <button v-on:click="next">{{ button }}</button>
@@ -39,15 +23,16 @@ export default {
       message: '口座残高：',
       tableRadio: '選択',
       tableSendCustName: '振込先',
-      button: '次へ'
+      button: '次へ',
+      selectedCustNo: '',
     };
   },
   methods:{
-    next: function(){
+    next: function(registedCust){
       console.log('INFO: 振込金額入力画面へ');
-
-      console.log('DEBUG: 振込先お客様番号：' + this.$store.state.custInfo[0].REGISTED_CUST_1);
-
+      console.log('DEBUG: 振込先お客様番号：' + this.selectedCustNo);
+      // 振込先お客様番号をストアに保存
+      this.$store.commit('storeSendCustNo', this.selectedCustNo);
       // 振込画面へ遷移
       this.$router.push('/send');
     }

@@ -50,7 +50,13 @@ export default {
       loginParams.append('password', password);
       axios.post(baseUrl + 'login', loginParams)
         .then(response => {
-          console.log('DEBUG: 認証結果：' + response.data);
+          console.log('DEBUG: 認証結果：' + response.data.result);
+          if(response.data.result == 'false'){
+            // ログイン画面へ遷移
+            console.log('INFO: ログイン認証失敗');
+            this.$router.push('/login');
+            return;
+          }
 
           // 残高照会APIをリクエスト
           console.log('INFO: 残高照会APIリクエスト実行');
@@ -73,9 +79,22 @@ export default {
                   // 取引履歴をストアに保存
                   this.$store.commit('storeHistoryInfo', response.data);  
 
-                  // 残高照会画面へ遷移
-                  this.$router.push('/show');
+                  // 登録済振込先を取得
+                  let registedCustParams = new URLSearchParams();
+                  registedCustParams.append('custNo', custNo);
+                  axios.post(baseUrl + 'registedCust', registedCustParams)
+                    .then(response => {
+                      console.log('DEBUG: 登録済振込先取得結果：' + response.data);
+                      // 振込先情報をストアに保存
+                      this.$store.commit('storeRegistedCusts', response.data);
+                      // 残高照会画面へ遷移
+                      this.$router.push('/show');
 
+                    }).catch(error => {
+                      console.log('ERROR @登録済振込先取得API：' + error);
+                      // ログイン画面へ遷移
+                      this.$router.push('/login');
+                    })
                 }).catch(error => {
                   console.log('ERROR @取引履歴取得API：' + error);
                   // ログイン画面へ遷移

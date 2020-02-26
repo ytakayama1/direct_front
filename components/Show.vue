@@ -1,7 +1,8 @@
 <template>
 <div>
   <h3>{{ title }}</h3>
-  <h4>{{ message }} {{ $store.state.custInfo }}</h4>
+  <h4>{{ loginUser }} {{ $store.state.custInfo.CUST_NO }}</h4>
+  <h4>{{ message }} {{ $store.state.custInfo.AMOUNT }} 円</h4>
   <table border="1">
       <tr>
         <th>{{ tableDate }}</th>
@@ -32,7 +33,8 @@ export default {
       tableStockAmount: '預入額',
       stockMoney: '',
       button: 'お振込みへ',
-      storeValue: ''
+      storeValue: '',
+      loginUser: 'ログインユーザ'
     };
   },
   methods:{
